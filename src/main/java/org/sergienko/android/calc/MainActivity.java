@@ -2,6 +2,7 @@ package org.sergienko.android.calc;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,66 +61,6 @@ public class MainActivity extends ActionBarActivity {
         result = (TextView) findViewById(R.id.result);
         result.setText("0");
 
-        OnClickListener listener0 = new OnClickListener(){
-            public void onClick(View w){
-                calc.addDigit('0');
-                result.setText(calc.display);
-            }
-           };
-        OnClickListener listener1 = new OnClickListener(){
-            public void onClick(View w){
-                calc.addDigit('1');
-                result.setText(calc.display);
-            }
-        };
-        OnClickListener listener2 = new OnClickListener(){
-            public void onClick(View w){
-                calc.addDigit('2');
-                result.setText(calc.display);
-            }
-        };
-        OnClickListener listener3 = new OnClickListener(){
-            public void onClick(View w){
-                calc.addDigit('3');
-                result.setText(calc.display);
-            }
-        };
-        OnClickListener listener4 = new OnClickListener(){
-            public void onClick(View w){
-                calc.addDigit('4');
-                result.setText(calc.display);
-            }
-        };
-        OnClickListener listener5 = new OnClickListener(){
-            public void onClick(View w){
-                calc.addDigit('5');
-                result.setText(calc.display);
-            }
-        };
-        OnClickListener listener6 = new OnClickListener(){
-            public void onClick(View w){
-                calc.addDigit('6');
-                result.setText(calc.display);
-            }
-        };
-        OnClickListener listener7 = new OnClickListener(){
-            public void onClick(View w){
-                calc.addDigit('7');
-                result.setText(calc.display);
-            }
-        };
-        OnClickListener listener8 = new OnClickListener(){
-            public void onClick(View w){
-                calc.addDigit('8');
-                result.setText(calc.display);
-            }
-        };
-        OnClickListener listener9 = new OnClickListener(){
-            public void onClick(View w){
-                calc.addDigit('9');
-                result.setText(calc.display);
-            }
-        };
         OnClickListener listenerAdd = new OnClickListener(){
             public void onClick(View w){
                 calc.execute('+');
@@ -165,17 +106,6 @@ public class MainActivity extends ActionBarActivity {
             }
         };
 
-
-        button0.setOnClickListener(listener0);
-        button1.setOnClickListener(listener1);
-        button2.setOnClickListener(listener2);
-        button3.setOnClickListener(listener3);
-        button4.setOnClickListener(listener4);
-        button5.setOnClickListener(listener5);
-        button6.setOnClickListener(listener6);
-        button7.setOnClickListener(listener7);
-        button8.setOnClickListener(listener8);
-        button9.setOnClickListener(listener9);
         buttonAdd.setOnClickListener(listenerAdd);
         buttonSubtract.setOnClickListener(listenerSubtract);
         buttonDivide.setOnClickListener(listenerDivide);
@@ -187,8 +117,11 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-
-
+    public void onNumberKeyboardClick(View v) {
+        Button button = (Button) v;
+        calc.addDigit(button.getText().charAt(0));
+        result.setText(calc.display);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

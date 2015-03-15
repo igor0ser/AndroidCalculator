@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidCalculator.iml" filepath="$PROJECT_DIR$/AndroidCalculator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AndroidCalculator.iml" filepath="$PROJECT_DIR$/AndroidCalculator.iml" />
     </modules>
   </component>
 </project>
