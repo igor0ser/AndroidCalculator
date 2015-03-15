@@ -104,7 +104,10 @@ public class Calculator {
     }
 
     private String toDisplay(double d) {
-
+        if (Double.isNaN(d)) {
+            result = 0;
+            return "error";
+        }
         if ((d > MAX) || (d < -MAX)) {
             result = 0;
             return "error";

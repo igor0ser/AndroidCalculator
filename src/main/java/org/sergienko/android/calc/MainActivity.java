@@ -2,7 +2,6 @@ package org.sergienko.android.calc;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,23 +11,13 @@ import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
 
-    Button button0;
-    Button button1;
-    Button button2;
-    Button button3;
-    Button button4;
-    Button button5;
-    Button button6;
-    Button button7;
-    Button button8;
-    Button button9;
-    Button buttonAdd;
-    Button buttonSubtract;
-    Button buttonMultiply;
-    Button buttonDivide;
-    Button buttonEquals;
-    Button buttonAC;
-    Button buttonDot;
+    private Button buttonAdd;
+    private Button buttonSubtract;
+    private Button buttonMultiply;
+    private Button buttonDivide;
+    private Button buttonEquals;
+    private Button buttonAC;
+    private Button buttonDot;
     Calculator calc;
 
 
@@ -40,17 +29,6 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.main);
         calc = new Calculator();
 
-
-        button0 = (Button) findViewById(R.id.button0);
-        button1 = (Button) findViewById(R.id.button1);
-        button2 = (Button) findViewById(R.id.button2);
-        button3 = (Button) findViewById(R.id.button3);
-        button4 = (Button) findViewById(R.id.button4);
-        button5 = (Button) findViewById(R.id.button5);
-        button6 = (Button) findViewById(R.id.button6);
-        button7 = (Button) findViewById(R.id.button7);
-        button8 = (Button) findViewById(R.id.button8);
-        button9 = (Button) findViewById(R.id.button9);
         buttonAdd = (Button) findViewById(R.id.buttonAdd);
         buttonSubtract = (Button) findViewById(R.id.buttonSubtract);
         buttonMultiply = (Button) findViewById(R.id.buttonMultiply);
