@@ -113,8 +113,6 @@ public class MainActivity extends ActionBarActivity {
         buttonEquals.setOnClickListener(listenerEquals);
         buttonAC.setOnClickListener(listenerAC);
         buttonDot.setOnClickListener(listenerDot);
-
-
     }
 
     public void onNumberKeyboardClick(View v) {
