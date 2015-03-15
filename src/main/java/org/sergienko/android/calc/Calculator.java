@@ -1,144 +1,158 @@
 package org.sergienko.android.calc;
 
+import android.util.Log;
+
 import java.text.NumberFormat;
 import java.text.ParseException;
 
 public class Calculator {
-    private StringBuilder sb;
-    private NumberFormat nf;
-    public String display;
-    private double result;
-    private char operator = '+';
-    private boolean haveItDot = false;
     private static final double MAX = 999999999;
-    private double d;
-    private boolean flag = false;
+
+    private StringBuilder mStringBuilder;
+    private NumberFormat mNumberFormat;
+    private String mDisplay;
+    private double mResult;
+    private char mOperator = '+';
+    private boolean mIsDotPresent = false;
+    private double mBufferDouble;
+    private boolean mEqualsWasPressed = false;
 
     public Calculator() {
-        sb = new StringBuilder(12);
-        sb.append('0');
+        mStringBuilder = new StringBuilder(12);
+        mStringBuilder.append('0');
 
-        nf = NumberFormat.getInstance();
-        nf.setMaximumFractionDigits(9);
-        nf.setGroupingUsed(false);
+        mNumberFormat = NumberFormat.getInstance();
+        mNumberFormat.setMaximumFractionDigits(9);
+        mNumberFormat.setGroupingUsed(false);
     }
 
     private boolean isLengthOk() {
-        if (haveItDot)
-            return (sb.length() <= 9);
+        if (mIsDotPresent)
+            return (mStringBuilder.length() <= 9);
         else
-            return (sb.length() <= 8);
+            return (mStringBuilder.length() <= 8);
     }
 
     public void addDigit(char c) {
-        if (flag)
-            result = 0;
+        if (mEqualsWasPressed)
+            mResult = 0;
         if (isLengthOk()) {
-            if (sb.toString().equals("0"))
-                sb.deleteCharAt(0);
-            sb.append(c);
-            display = sb.toString();
+            if (mStringBuilder.toString().equals("0")) mStringBuilder.deleteCharAt(0);
+            mStringBuilder.append(c);
+            mDisplay = mStringBuilder.toString();
         }
     }
 
     public void addDot() {
-        if (flag)
-            result = 0;
-        if ((!haveItDot) && (isLengthOk())) {
-            sb.append('.');
-            haveItDot = true;
-            display = sb.toString();
+        if (mEqualsWasPressed)
+            mResult = 0;
+        if ((!mIsDotPresent) && (isLengthOk())) {
+            mStringBuilder.append(',');
+            mIsDotPresent = true;
+            mDisplay = mStringBuilder.toString();
         }
     }
 
     public void AC() {
-        sb.delete(0, sb.length());
-        sb.append('0');
-        display = sb.toString();
-        result = 0;
-        haveItDot = false;
-        flag = false;
-        operator = '+';
+        mStringBuilder.delete(0, mStringBuilder.length());
+        mStringBuilder.append('0');
+        mDisplay = mStringBuilder.toString();
+        mResult = 0;
+        mIsDotPresent = false;
+        mEqualsWasPressed = false;
+        mOperator = '+';
 
     }
 
     private void action() {
-        if (!flag) {
-            d = parseToDouble(sb);
+        if (!mEqualsWasPressed) {
+            mBufferDouble = parseToDouble(mStringBuilder);
             // operator = '+';
         }
 
-        switch (operator) {
+        switch (mOperator) {
             case '+':
-                result = result + d;
+                mResult = mResult + mBufferDouble;
                 break;
             case '-':
-                result = result - d;
+                mResult = mResult - mBufferDouble;
                 break;
             case '/':
-                result = result / d;
+                mResult = mResult / mBufferDouble;
                 break;
             case '*':
-                result = result * d;
+                mResult = mResult * mBufferDouble;
                 break;
         }
 
-        display = toDisplay(result);
-        sb.delete(0, sb.length());
-        sb.append('0');
-        haveItDot = false;
+        mDisplay = toDisplay(mResult);
+        mStringBuilder.delete(0, mStringBuilder.length());
+        mStringBuilder.append('0');
+        mIsDotPresent = false;
     }
 
     public void execute(char c) {
-        if (!flag) {
+        if (!mEqualsWasPressed) {
             action();
         }
-        flag = false;
-        operator = c;
+        mEqualsWasPressed = false;
+        mOperator = c;
     }
 
     public void buttonEquals() {
         action();
         // operator = '+';
-        flag = true;
+        mEqualsWasPressed = true;
     }
 
     private String toDisplay(double d) {
         if (Double.isNaN(d)) {
-            result = 0;
+            mResult = 0;
             return "error";
         }
         if ((d > MAX) || (d < -MAX)) {
-            result = 0;
+            mResult = 0;
             return "error";
         } else {
-            String s = nf.format(d);
+            String s = mNumberFormat.format(d);
             if (s.length() > 9) {
                 s = s.substring(0, 9);
-                if (s.endsWith(","))
-                    s = s.substring(0, 8);
+                if (s.endsWith(",")) s = s.substring(0, 8);
             }
             return s;
         }
     }
 
     private double parseToDouble(StringBuilder s) {
-        String s1 = s.toString();
+        String result =s.toString();
         double d = 0;
-        if (haveItDot) {
-            if (s1.endsWith("."))
-                s1 = s1.substring(0, s.length() - 1);
+        if (mIsDotPresent) {
+
+
+            if (result.endsWith(".")) result = result.substring(0, s.length() - 1);
 
             try {
-                d = (double) nf.parseObject(s1);
+                d = (double) mNumberFormat.parseObject(result);
             } catch (ParseException e) {
-                System.err.println("something goes wrong with parsing.");
+                result.replace(",",".");
+                try{
+                d = (double) mNumberFormat.parseObject(result);}
+                catch (ParseException e1) {
+                    e.printStackTrace();
+                }
             }
 
+
+
         } else {
-            d = Double.parseDouble(s1);
+            d = Double.parseDouble(s.toString());
         }
         return d;
     }
+
+    public String getDisplay() {
+        return mDisplay;
+    }
+
 
 }
