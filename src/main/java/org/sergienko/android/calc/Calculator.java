@@ -1,4 +1,4 @@
-package igor0ser.gmail.com.androidcalculator;
+package org.sergienko.android.calc;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
