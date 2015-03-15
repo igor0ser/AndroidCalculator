@@ -45,7 +45,7 @@ public class Calculator {
         if (flag)
             result = 0;
         if ((!haveItDot) && (isLengthOk())) {
-            sb.append(',');
+            sb.append('.');
             haveItDot = true;
             display = sb.toString();
         }
@@ -120,21 +120,21 @@ public class Calculator {
     }
 
     private double parseToDouble(StringBuilder s) {
-
         String s1 = s.toString();
         double d = 0;
-        if (haveItDot == true) {
-            if (s1.endsWith(","))
+        if (haveItDot) {
+            if (s1.endsWith("."))
                 s1 = s1.substring(0, s.length() - 1);
 
             try {
-                d = (double) nf.parseObject(sb.toString());
+                d = (double) nf.parseObject(s1);
             } catch (ParseException e) {
                 System.err.println("something goes wrong with parsing.");
             }
 
-        } else if (haveItDot == false)
+        } else {
             d = Double.parseDouble(s1);
+        }
         return d;
     }
 
