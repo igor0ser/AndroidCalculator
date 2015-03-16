@@ -7,7 +7,7 @@ import java.text.ParseException;
 
 public class Calculator {
     private static final double MAX = 999999999;
-
+    private final String mDot;
     private StringBuilder mStringBuilder;
     private NumberFormat mNumberFormat;
     private String mDisplay;
@@ -24,6 +24,8 @@ public class Calculator {
         mNumberFormat = NumberFormat.getInstance();
         mNumberFormat.setMaximumFractionDigits(9);
         mNumberFormat.setGroupingUsed(false);
+        mDot = mNumberFormat.format(new Double(0.1)).contains(",") ? "," : ".";
+
     }
 
     private boolean isLengthOk() {
@@ -37,7 +39,8 @@ public class Calculator {
         if (mEqualsWasPressed)
             mResult = 0;
         if (isLengthOk()) {
-            if (mStringBuilder.toString().equals("0")) mStringBuilder.deleteCharAt(0);
+            if (mStringBuilder.toString().equals("0"))
+                mStringBuilder.deleteCharAt(0);
             mStringBuilder.append(c);
             mDisplay = mStringBuilder.toString();
         }
@@ -47,7 +50,7 @@ public class Calculator {
         if (mEqualsWasPressed)
             mResult = 0;
         if ((!mIsDotPresent) && (isLengthOk())) {
-            mStringBuilder.append(',');
+            mStringBuilder.append(mDot);
             mIsDotPresent = true;
             mDisplay = mStringBuilder.toString();
         }
@@ -117,32 +120,26 @@ public class Calculator {
             String s = mNumberFormat.format(d);
             if (s.length() > 9) {
                 s = s.substring(0, 9);
-                if (s.endsWith(",")) s = s.substring(0, 8);
+                if (s.endsWith(","))
+                    s = s.substring(0, 8);
             }
             return s;
         }
     }
 
     private double parseToDouble(StringBuilder s) {
-        String result =s.toString();
+        String result = s.toString();
         double d = 0;
         if (mIsDotPresent) {
 
-
-            if (result.endsWith(".")) result = result.substring(0, s.length() - 1);
+            if (result.endsWith((String)mDot))
+                result = result.substring(0, s.length() - 1);
 
             try {
                 d = (double) mNumberFormat.parseObject(result);
             } catch (ParseException e) {
-                result.replace(",",".");
-                try{
-                d = (double) mNumberFormat.parseObject(result);}
-                catch (ParseException e1) {
-                    e.printStackTrace();
-                }
+                e.printStackTrace();
             }
-
-
 
         } else {
             d = Double.parseDouble(s.toString());
