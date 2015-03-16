@@ -16,6 +16,7 @@ public class Calculator {
     private boolean mIsDotPresent = false;
     private double mBufferDouble;
     private boolean mEqualsWasPressed = false;
+    private boolean mDigitWasPressed = true;
 
     public Calculator() {
         mStringBuilder = new StringBuilder(12);
@@ -36,6 +37,7 @@ public class Calculator {
     }
 
     public void addDigit(char c) {
+        mDigitWasPressed = true;
         if (mEqualsWasPressed)
             mResult = 0;
         if (isLengthOk()) {
@@ -47,6 +49,7 @@ public class Calculator {
     }
 
     public void addDot() {
+        mDigitWasPressed = true;
         if (mEqualsWasPressed)
             mResult = 0;
         if ((!mIsDotPresent) && (isLengthOk())) {
@@ -57,6 +60,7 @@ public class Calculator {
     }
 
     public void AC() {
+        mDigitWasPressed = true;
         mStringBuilder.delete(0, mStringBuilder.length());
         mStringBuilder.append('0');
         mDisplay = mStringBuilder.toString();
@@ -68,9 +72,11 @@ public class Calculator {
     }
 
     private void action() {
-        if (!mEqualsWasPressed) {
+        if ((!mEqualsWasPressed)) {
             mBufferDouble = parseToDouble(mStringBuilder);
-            // operator = '+';
+        }
+        if (!mDigitWasPressed){
+            mBufferDouble=mResult;
         }
 
         switch (mOperator) {
@@ -95,17 +101,22 @@ public class Calculator {
     }
 
     public void execute(char c) {
-        if (!mEqualsWasPressed) {
-            action();
+        if (mDigitWasPressed){
+            if (!mEqualsWasPressed) {
+                action();
+            }
+            mDigitWasPressed=false;
+            System.out.println(mDigitWasPressed);
         }
         mEqualsWasPressed = false;
         mOperator = c;
     }
 
     public void buttonEquals() {
+
         action();
-        // operator = '+';
         mEqualsWasPressed = true;
+        mDigitWasPressed = true;
     }
 
     private String toDisplay(double d) {
@@ -132,7 +143,7 @@ public class Calculator {
         double d = 0;
         if (mIsDotPresent) {
 
-            if (result.endsWith((String)mDot))
+            if (result.endsWith((String) mDot))
                 result = result.substring(0, s.length() - 1);
 
             try {
